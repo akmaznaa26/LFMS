@@ -1,2 +1,2 @@
-# LFMS
-Library Fine Management System
+# PyProject
+Django Template
