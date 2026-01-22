@@ -1,0 +1,110 @@
+{% extends 'website/base.html' %}
+
+{% block title %}Borrow | Website{% endblock %}
+
+{% block content %}
+<h1>Borrow Records</h1>
+
+<!-- ================= FORM ADD / EDIT ================= -->
+<form method="POST" class="mb-4">
+    {% csrf_token %}
+
+    {% if edit %}
+        <input type="hidden" name="borrow_id" value="{{ edit.borrow_id }}">
+    {% endif %}
+
+    <div class="mb-2">
+        <label>Username</label>
+        <input type="text" name="username" class="form-control"
+               value="{{ edit.username|default_if_none:'' }}" required>
+    </div>
+
+    <div class="mb-2">
+        <label>Book ID</label>
+        <input type="text" name="book_id" class="form-control"
+               value="{{ edit.book_id|default_if_none:'' }}" required>
+    </div>
+
+    <div class="mb-2">
+        <label>Book Title</label>
+        <input type="text" name="title" class="form-control"
+               value="{{ edit.title|default_if_none:'' }}" required>
+    </div>
+
+    <div class="mb-2">
+        <label>Borrow Date</label>
+        <input type="date" name="borrow_date" class="form-control"
+               value="{{ edit.borrow_date|default_if_none:'' }}" required>
+        <small class="text-muted">Borrow limit: 2 days</small>
+    </div>
+
+    <div class="mb-2">
+        <label>Return Date</label>
+        <input type="date" name="return_date" class="form-control"
+               value="{{ edit.return_date|default_if_none:'' }}">
+        <small class="text-muted">Leave empty if book not returned yet</small>
+    </div>
+
+    <!-- FINE DISPLAY -->
+    {% if edit %}
+    <div class="mb-2">
+        <label>Fine (RM)</label>
+        <input type="number" class="form-control"
+               value="{{ edit.fine_amounts }}" readonly>
+    </div>
+    {% endif %}
+
+    <button type="submit" class="btn btn-primary">
+        {% if edit %}Update{% else %}Add{% endif %} Borrow
+    </button>
+    {% if edit %}
+        <a href="{% url 'user' %}" class="btn btn-secondary">Cancel</a>
+    {% endif %}
+</form>
+
+<!-- ================= TABLE ================= -->
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Borrow ID</th>
+            <th>Username</th>
+            <th>Book ID</th>
+            <th>Title</th>
+            <th>Borrow Date</th>
+            <th>Return Date</th>
+            <th>Late Days</th>
+            <th>Fine_amounts (RM)</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for borrow in borrows %}
+        <tr {% if borrow.fine_amounts > 0 %}class="table-warning"{% endif %}>
+            <td>{{ borrow.borrow_id }}</td>
+            <td>{{ borrow.username }}</td>
+            <td>{{ borrow.book_id }}</td>
+            <td>{{ borrow.title }}</td>
+            <td>{{ borrow.borrow_date }}</td>
+            <td>
+                {% if borrow.return_date %}
+                    {{ borrow.return_date }}
+                {% else %}
+                    <span class="text-danger">Not returned</span>
+                {% endif %}
+            </td>
+            <td>{{ borrow.late_days }}</td>
+            <td>RM {{ borrow.fine_amounts }}</td>
+            <td>
+                <a href="?edit={{ borrow.borrow_id }}" class="btn btn-sm btn-warning">Edit</a>
+                <a href="?delete={{ borrow.borrow_id }}" class="btn btn-sm btn-danger"
+                   onclick="return confirm('Are you sure?')">Delete</a>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="9" class="text-center">No borrow records</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

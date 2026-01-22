@@ -1,0 +1,223 @@
+{% extends 'website/base.html' %}
+{% block title %}Help | Website{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+
+    <h1 class="text-center mb-3">💬 Library Smart Assistant</h1>
+    <p class="text-center text-muted mb-4">
+        Ask anything about the library system or click a quick reply below! 😊
+    </p>
+
+    <!-- QUICK REPLIES -->
+    <div class="d-flex justify-content-center flex-wrap gap-2 mb-4">
+        <button class="quick-btn">Books 📚</button>
+        <button class="quick-btn">Borrow 👤</button>
+        <button class="quick-btn">Fines 💰</button>
+        <button class="quick-btn">Payment 🏦</button>
+    </div>
+
+    <!-- CHAT BOX -->
+    <div class="chat-container">
+        <div id="chatWindow" class="chat-window"></div>
+        <div class="chat-input-area">
+            <input type="text" id="chatInput" placeholder="Type your question here..." />
+            <button id="sendBtn">Send</button>
+        </div>
+    </div>
+
+</div>
+
+<style>
+/* CHAT CONTAINER */
+.chat-container {
+    max-width: 600px;
+    margin: auto;
+    border-radius: 15px;
+    background: #f8f9fa;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+    display: flex;
+    flex-direction: column;
+    height: 500px;
+    overflow: hidden;
+}
+
+/* CHAT WINDOW */
+.chat-window {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+    background: linear-gradient(135deg, #e3f2fd, #fff3e0);
+    display: flex;
+    flex-direction: column;
+}
+
+/* MESSAGE BUBBLES */
+.message {
+    max-width: 70%;
+    padding: 12px 16px;
+    border-radius: 25px;
+    margin-bottom: 10px;
+    word-wrap: break-word;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: bubbleIn 0.3s forwards;
+}
+
+.user-msg {
+    background: #42a5f5;
+    color: white;
+    margin-left: auto;
+    border-bottom-right-radius: 5px;
+}
+
+.bot-msg {
+    background: #fff3e0;
+    color: #333;
+    margin-right: auto;
+    border-bottom-left-radius: 5px;
+}
+
+/* INPUT AREA */
+.chat-input-area {
+    display: flex;
+    border-top: 1px solid #ddd;
+    padding: 10px;
+    background: #f8f9fa;
+}
+
+.chat-input-area input {
+    flex: 1;
+    padding: 10px 15px;
+    border-radius: 20px;
+    border: 1px solid #ccc;
+    outline: none;
+}
+
+.chat-input-area button {
+    margin-left: 10px;
+    padding: 10px 20px;
+    border-radius: 20px;
+    border: none;
+    background: #42a5f5;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.chat-input-area button:hover {
+    background: #1e88e5;
+}
+
+/* QUICK REPLY BUTTONS */
+.quick-btn {
+    padding: 8px 15px;
+    border: none;
+    border-radius: 20px;
+    background: #ffe0b2;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.2s;
+}
+
+.quick-btn:hover {
+    background: #ffcc80;
+}
+
+/* ANIMATION */
+@keyframes bubbleIn {
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* SCROLLBAR */
+.chat-window::-webkit-scrollbar {
+    width: 6px;
+}
+.chat-window::-webkit-scrollbar-thumb {
+    background-color: rgba(0,0,0,0.2);
+    border-radius: 3px;
+}
+</style>
+
+<script>
+// SMART ASSISTANT LOGIC
+const chatWindow = document.getElementById("chatWindow");
+const chatInput = document.getElementById("chatInput");
+const sendBtn = document.getElementById("sendBtn");
+const quickBtns = document.querySelectorAll(".quick-btn");
+
+// INTENT DETECTION FUNCTION
+function detectIntent(msg) {
+    msg = msg.toLowerCase();
+
+    if (msg.includes("book") || msg.includes("title") || msg.includes("author")) return "books";
+    if (msg.includes("borrow") || msg.includes("take") || msg.includes("loan")) return "borrow";
+    if (msg.includes("fine") || msg.includes("late") || msg.includes("overdue")) return "fines";
+    if (msg.includes("payment") || msg.includes("pay") || msg.includes("receipt")) return "payment";
+
+    return "default";
+}
+
+// MULTIPLE RESPONSES PER INTENT
+const responses = {
+    "books": [
+        "📚 You can manage all books here: add, edit, or delete easily!",
+        "Remember to check book availability before borrowing! 😊",
+        "Click on any book to see details or edit info."
+    ],
+    "borrow": [
+        "👤 Borrow books by filling the form. The system calculates late fines automatically.",
+        "Return books on time to avoid extra fines!",
+        "Check your borrowed books on your profile anytime."
+    ],
+    "fines": [
+        "💰 Late returns cost RM1 per day. Keep track on the User page.",
+        "Overdue fines are calculated automatically when you return a book."
+    ],
+    "payment": [
+        "🏦 Record payments in the Payment section. Receipt shows instantly.",
+        "Payments are simulated but help you track fines efficiently."
+    ],
+    "default": [
+        "🤔 Sorry, I didn't understand. Try asking about Books, Borrow, Fines, or Payment."
+    ]
+};
+
+// ADD MESSAGE FUNCTION
+function addMessage(text, sender) {
+    const msgDiv = document.createElement("div");
+    msgDiv.classList.add("message", sender + "-msg");
+    msgDiv.innerText = text;
+    chatWindow.appendChild(msgDiv);
+    chatWindow.scrollTop = chatWindow.scrollHeight;
+}
+
+// GET RANDOM RESPONSE
+function getResponse(msg) {
+    const intent = detectIntent(msg);
+    const options = responses[intent];
+    return options[Math.floor(Math.random() * options.length)];
+}
+
+// SEND MESSAGE
+function sendMessage(msg=null) {
+    const userText = msg ? msg : chatInput.value.trim();
+    if (!userText) return;
+    addMessage(userText, "user");
+    chatInput.value = "";
+    setTimeout(() => {
+        addMessage(getResponse(userText), "bot");
+    }, 500); // simulate typing delay
+}
+
+// EVENT LISTENERS
+sendBtn.addEventListener("click", () => sendMessage());
+chatInput.addEventListener("keypress", function(e) {
+    if (e.key === "Enter") sendMessage();
+});
+quickBtns.forEach(btn => {
+    btn.addEventListener("click", () => sendMessage(btn.innerText));
+});
+</script>
+{% endblock %}

@@ -1,0 +1,81 @@
+{% extends 'website/base.html' %}
+
+{% block title %}Staff | Website{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1 class="mb-4">Staff Management</h1>
+
+    <!-- FORM ADD / EDIT -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <form method="POST">
+                {% csrf_token %}
+                {% if edit %}
+                    <input type="hidden" name="staff_id" value="{{ edit.staff_id }}">
+                {% endif %}
+
+                <div class="mb-3">
+                    <label for="staff_name" class="form-label">Staff Name</label>
+                    <input type="text" name="staff_name" id="staff_name" class="form-control" value="{{ edit.staff_name|default_if_none:'' }}" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="assigning_section" class="form-label">Assigning Section</label>
+                    <input type="text" name="assigning_section" id="assigning_section" class="form-control" value="{{ edit.assigning_section|default_if_none:'' }}" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="staff_email" class="form-label">Email</label>
+                    <input type="email" name="staff_email" id="staff_email" class="form-control" value="{{ edit.staff_email|default_if_none:'' }}" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="shift" class="form-label">Shift</label>
+                    <input type="text" name="shift" id="shift" class="form-control" value="{{ edit.shift|default_if_none:'' }}" required>
+                </div>
+
+                <button type="submit" class="btn btn-primary">{{ edit|yesno:"Update,Add" }}</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- STAFF LIST -->
+    <div class="card">
+        <div class="card-body">
+            <h5>Staff List</h5>
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>Staff ID</th>
+                        <th>Name</th>
+                        <th>Section</th>
+                        <th>Email</th>
+                        <th>Shift</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for staff in staffs %}
+                    <tr>
+                        <td>{{ staff.staff_id }}</td>
+                        <td>{{ staff.staff_name }}</td>
+                        <td>{{ staff.assigning_section }}</td>
+                        <td>{{ staff.staff_email }}</td>
+                        <td>{{ staff.shift}}</td>
+                        <td>
+                            <a href="?edit={{ staff.staff_id }}" class="btn btn-sm btn-warning">Edit</a>
+                            <a href="?delete={{ staff.staff_id }}" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?');">Delete</a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="6" class="text-center">No staff yet.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,38 @@
+{% extends 'website/base.html' %}
+
+{% block title %}Data | Website{% endblock %}
+
+{% block content %}
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Borrow ID</th>
+            <th>Username</th>
+            <th>Book ID</th>
+            <th>Title</th>
+            <th>Borrow Date</th>
+            <th>Return Date</th>
+            <th>Late Days</th>
+            <th>Fine (RM)</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for d in borrows %}
+        <tr>
+            <td>{{ d.0 }}</td>
+            <td>{{ d.1 }}</td>
+            <td>{{ d.2 }}</td>
+            <td>{{ d.3 }}</td>
+            <td>{{ d.4 }}</td>
+            <td>{{ d.5|default:"-" }}</td>
+            <td>{{ d.6 }}</td>
+            <td>{{ d.7 }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="8">No data found</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

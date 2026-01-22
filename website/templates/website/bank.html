@@ -1,0 +1,85 @@
+{% extends 'website/base.html' %}
+
+{% block title %}Bank | Website{% endblock %}
+
+{% block content %}
+<h1>Bank</h1>
+
+<!-- PAY FINE FORM -->
+<div class="card mb-4">
+    <div class="card-body">
+        <h5 class="card-title">Pay Library Fine</h5>
+
+        <form method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="action" value="pay_fine">
+
+            <div class="mb-2">
+                <label>Name</label>
+                <input type="text" name="name" class="form-control" required>
+            </div>
+
+            <div class="mb-2">
+                <label>Card Number</label>
+                <input type="text" name="card_number" class="form-control" required>
+            </div>
+
+            <div class="mb-2">
+                <label>Borrow ID</label>
+                <input type="number" name="borrow_id" class="form-control" required>
+            </div>
+
+            <div class="mb-2">
+                <label>Fine Amount (RM)</label>
+                <input type="number" step="0.01" name="fine_amount" class="form-control" required>
+            </div>
+
+            <button type="submit" class="btn btn-danger">Pay Fine</button>
+        </form>
+    </div>
+</div>
+
+<!-- PAYMENT RESULT -->
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">Payment Result</h5>
+
+        {% if payments %}
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Card Number</th>
+                    <th>Borrow ID</th>
+                    <th>Fine Amount (RM)</th>
+                    <th>Payment Date</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for p in payments %}
+                <tr>
+                    <td>{{ p.name }}</td>
+                    <td>{{ p.card_number }}</td>
+                    <td>{{ p.borrow_id }}</td>
+                    <td>{{ p.fine_amount }}</td>
+                    <td>{{ p.payment_date|date:"Y-m-d H:i" }}</td>
+                    <td>
+                        <form method="POST" style="display:inline;">
+                            {% csrf_token %}
+                            <input type="hidden" name="action" value="delete_payment">
+                            <input type="hidden" name="payment_id" value="{{ p.rowid }}">
+                            <button type="submit" class="btn btn-sm btn-warning">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p>No payment made yet.</p>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}

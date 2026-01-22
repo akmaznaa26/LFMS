@@ -1,0 +1,112 @@
+{% extends 'website/base.html' %}
+{% load static %}
+
+{% block title %}About | LFMS{% endblock %}
+
+{% block content %}
+
+<!-- ABOUT PAGE START -->
+
+<!-- GRADIENT HEADER -->
+<div class="py-5 text-center text-white"
+     style="background: linear-gradient(135deg, #8b85f7ff, #ec8bfdff);">
+  <h1 class="fw-bold" style="font-family: 'Times New Roman', serif;">
+  About LFMS
+</h1>
+  <p class="mb-0">Library Fine Management System</p>
+</div>
+
+<!-- CONTENT AREA WITH PATTERN -->
+<div class="container-fluid py-5"
+     style="background-color:#f8fafc;
+            background-image: radial-gradient(#c7d2fe 1px, transparent 1px);
+            background-size: 20px 20px;
+            font-family: 'Times New Roman', serif;">
+
+  <div class="container">
+
+    <!-- INTRO CARD -->
+    <div class="card shadow-lg border-0 mb-5"
+         style="background-color: rgb(186, 183, 239);"> <!-- Warna kotak -->
+      <div class="card-body p-4">
+
+        <p style="font-size: 18px; line-height: 1.6;">
+          <strong>Library Fine Management System (LFMS)</strong> is a web-based system developed to manage library fines
+          efficiently and accurately. It automates overdue fine calculations, tracks borrowed items, and presents
+          fine information in a structured and accessible format.
+        </p>
+
+        <p style="font-size: 18px; line-height: 1.6;">
+          By digitalizing the fine management process, LFMS minimizes manual work and reduces human error.
+          The system ensures transparency and improves the overall experience for both library users and staff.
+        </p>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- FEATURES -->
+<div class="row g-4">
+
+  <div class="col-md-4">
+    <div class="card h-100 border-0 shadow-sm feature-card" style="background-color: #e0e7ff;">
+      <div class="card-body text-center">
+        <i class="bi bi-clock-history fs-1 text-primary mb-3"></i>
+        <h5 style="font-family: 'Times New Roman', serif; font-size: 20px;" class="fw-semibold">
+          Automatic Calculation
+        </h5>
+        <p style="font-family: 'Times New Roman', serif; font-size: 16px; line-height: 1.6;">
+          Automatically calculates fines based on overdue return dates.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-4">
+    <div class="card h-100 border-0 shadow-sm feature-card" style="background-color: #e0e7ff;">
+      <div class="card-body text-center">
+        <i class="bi bi-file-earmark-text fs-1 text-primary mb-3"></i>
+        <h5 style="font-family: 'Times New Roman', serif; font-size: 20px;" class="fw-semibold">
+          Organized Records
+        </h5>
+        <p style="font-family: 'Times New Roman', serif; font-size: 16px; line-height: 1.6;">
+          Stores fine records in a structured and easy-to-manage format.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-4">
+    <div class="card h-100 border-0 shadow-sm feature-card" style="background-color: #e0e7ff;">
+      <div class="card-body text-center">
+        <i class="bi bi-people fs-1 text-primary mb-3"></i>
+        <h5 style="font-family: 'Times New Roman', serif; font-size: 20px;" class="fw-semibold">
+          User Friendly
+        </h5>
+        <p style="font-family: 'Times New Roman', serif; font-size: 16px; line-height: 1.6;">
+          Designed for both library staff and users.
+        </p>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Hover effect for feature cards -->
+<style>
+  .feature-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .feature-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.15);
+  }
+</style>
+
+<!-- ABOUT PAGE END -->
+
+{% endblock %}

@@ -1,0 +1,103 @@
+﻿{% extends "website/base.html" %}
+
+{% block title %}Home | LFMS{% endblock %}
+
+{% block content %}
+
+<!-- Google Font -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<style>
+    body {
+        font-family: 'Poppins', sans-serif;
+    }
+    .hero {
+        background: linear-gradient(135deg, #dbeafe, #eff6ff);
+        border-radius: 15px;
+        padding: 60px 30px;
+    }
+    .feature-card {
+        border: none;
+        border-radius: 15px;
+        transition: transform 0.2s ease;
+    }
+    .feature-card:hover {
+        transform: translateY(-5px);
+    }
+</style>
+
+<!-- Hero Section -->
+<div class="container my-5">
+    <div class="hero text-center shadow-sm">
+        <h1 class="fw-bold mb-3">Library Fine Management System</h1>
+        <p class="text-muted fs-5">
+            A smart and efficient system to manage library books, fines, and users.
+        </p>
+
+        <div class="mt-4">
+            <a href="#" class="btn btn-primary px-4 me-2">Explore Books</a>
+            <a href="#" class="btn btn-outline-secondary px-4">Pay Fine</a>
+        </div>
+    </div>
+</div>
+
+<!-- Features Section -->
+<div class="container my-5">
+    <div class="row text-center g-4">
+
+        <div class="col-md-3">
+            <div class="card feature-card shadow-sm p-4">
+                <h1>📚</h1>
+                <h5 class="fw-semibold mt-3">Book Management</h5>
+                <p class="text-muted small">
+                    Easily browse and manage library book collections.
+                </p>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card feature-card shadow-sm p-4">
+                <h1>👤</h1>
+                <h5 class="fw-semibold mt-3">User System</h5>
+                <p class="text-muted small">
+                    Manage users, profiles, and borrowing records.
+                </p>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card feature-card shadow-sm p-4">
+                <h1>💰</h1>
+                <h5 class="fw-semibold mt-3">Fine Payment</h5>
+                <p class="text-muted small">
+                    Track and pay overdue fines securely online.
+                </p>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card feature-card shadow-sm p-4">
+                <h1>🛠️</h1>
+                <h5 class="fw-semibold mt-3">Staff Control</h5>
+                <p class="text-muted small">
+                    Staff dashboard for full system monitoring.
+                </p>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- Info Section -->
+<div class="container my-5">
+    <div class="card shadow-sm border-0 p-4">
+        <h5 class="fw-semibold">📢 System Information</h5>
+        <ul class="text-muted mt-3 mb-0">
+            <li>Return books before due date to avoid penalties.</li>
+            <li>All fines can be paid through the online system.</li>
+            <li>Library operating hours: 9.00 AM – 5.00 PM.</li>
+        </ul>
+    </div>
+</div>
+
+{% endblock %}
